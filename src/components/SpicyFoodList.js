@@ -1,16 +1,33 @@
-import React, { useState } from "react";
-import { spicyFoods, getNewRandomSpicyFood } from "../data";
+import React, {useState} from 'react';
+import {spicyFoods, getNewRandomSpicyFood} from '../data';
 
-function SpicyFoodList() {
-  const [foods, setFoods] = useState(spicyFoods);
+function SpicyFoodList () {
+  const [foods, setFoods] = useState (spicyFoods);
 
-  function handleAddFood() {
-    const newFood = getNewRandomSpicyFood();
-    console.log(newFood);
+  function handleAddFood () {
+    const newFood = getNewRandomSpicyFood ();
+
+    const updateSpicyFood = [...foods, newFood];
+
+    setFoods (updateSpicyFood);
   }
 
-  const foodList = foods.map((food) => (
-    <li key={food.id}>
+  function handleIncreaseHeatLevel (id) {
+    const updateSpicyFood = foods.map (food => {
+      if (food.id === id) {
+        return {
+          ...food,
+          heatLevel: food.heatLevel + 1,
+        };
+      }
+      return food;
+    });
+
+    setFoods (updateSpicyFood);
+  }
+
+  const foodList = foods.map (food => (
+    <li key={food.id} onClick={() => handleIncreaseHeatLevel (food.id)}>
       {food.name} | Heat: {food.heatLevel} | Cuisine: {food.cuisine}
     </li>
   ));
